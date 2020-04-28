@@ -15,67 +15,66 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 public class ViewPagerFragment extends Fragment {
-    public static final String KEY_RECIPE_INDEX = "key_recipe_index";
-    public static final String KEY_IS_INGRIDIENTS = "key_is_ingridients";
-    private int mIndex;
+	public static final String KEY_RECIPE_INDEX = "key_recipe_index";
+	private int mIndex;
 
-    public static ViewPagerFragment newInstance(int index) {
+	public static ViewPagerFragment newInstance(int index) {
 
-        Bundle args = new Bundle();
-        args.putInt(KEY_RECIPE_INDEX, index);
+		Bundle args = new Bundle();
+		args.putInt(KEY_RECIPE_INDEX, index);
 
-        ViewPagerFragment fragment = new ViewPagerFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+		ViewPagerFragment fragment = new ViewPagerFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        mIndex = getArguments().getInt(KEY_RECIPE_INDEX);
-        Toast.makeText(getContext(), Recipes.names[mIndex], Toast.LENGTH_SHORT).show();
-        getActivity().setTitle(Recipes.names[mIndex]);
-    }
+		mIndex = getArguments().getInt(KEY_RECIPE_INDEX);
+		Toast.makeText(getContext(), Recipes.names[mIndex], Toast.LENGTH_SHORT).show();
+		getActivity().setTitle(Recipes.names[mIndex]);
+	}
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_viewpager, container, false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_viewpager, container, false);
 
-        final CheckBoxesFragment ingridientsFragment = CheckBoxesFragment.newInstance(mIndex,true);
-        final CheckBoxesFragment directionsFragment = CheckBoxesFragment.newInstance(mIndex, false);
-
-        ViewPager viewPager = view.findViewById(R.id.viewPager);
-        viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return position == 0 ? ingridientsFragment : directionsFragment;
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return position == 0 ? "Ingridients" : "Directions";
-            }
+		final IngridientsFragment ingridientsFragment = (IngridientsFragment) CheckBoxesFragment.newInstance(mIndex, new IngridientsFragment());
+		final DirectionsFragment directionsFragment = (DirectionsFragment) CheckBoxesFragment.newInstance(mIndex, new DirectionsFragment());
 
 
+		ViewPager viewPager = view.findViewById(R.id.viewPager);
+		viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+			@NonNull
+			@Override
+			public Fragment getItem(int position) {
+				return position == 0 ? ingridientsFragment : directionsFragment;
+			}
 
-            @Override
-            public int getCount() {
-                return 2 ;
-            }
-        });
+			@Nullable
+			@Override
+			public CharSequence getPageTitle(int position) {
+				return position == 0 ? "Ingridients" : "Directions";
+			}
 
 
-        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+			@Override
+			public int getCount() {
+				return 2;
+			}
+		});
 
-        return view;
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().setTitle(getResources().getString(R.string.app_name));
-    }
+		TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+		tabLayout.setupWithViewPager(viewPager);
+
+		return view;
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		getActivity().setTitle(getResources().getString(R.string.app_name));
+	}
 }

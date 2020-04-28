@@ -11,16 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class CheckBoxesFragment extends Fragment {
+public abstract class CheckBoxesFragment extends Fragment {
 	private static final String KEY_CHECKED_BOXES = "key_checked_boxes";
 	private CheckBox[] mCheckBoxes;
 
-	public static CheckBoxesFragment newInstance(int index, boolean bo) {
+	public static CheckBoxesFragment newInstance(int index, CheckBoxesFragment fragment) {
 
 		Bundle args = new Bundle();
 		args.putInt(ViewPagerFragment.KEY_RECIPE_INDEX, index);
-		args.putBoolean(ViewPagerFragment.KEY_IS_INGRIDIENTS, bo);
-		CheckBoxesFragment fragment = new CheckBoxesFragment();
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -31,15 +29,8 @@ public class CheckBoxesFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_checkboxes, container, false);
 
 		int index = getArguments().getInt(ViewPagerFragment.KEY_RECIPE_INDEX);
-		boolean isIngridients = getArguments().getBoolean(ViewPagerFragment.KEY_IS_INGRIDIENTS);
-		
-		String[] contents;
-		if (isIngridients) {
-			contents = Recipes.ingredients[index].split("`");
-		} else{
-			contents = Recipes.directions[index].split("`");
-		}
 
+		String[] contents = getContents(index);
 
 		mCheckBoxes = new CheckBox[contents.length];
 		boolean[] checkBoxes = new boolean[mCheckBoxes.length];
@@ -52,6 +43,8 @@ public class CheckBoxesFragment extends Fragment {
 
 		return view;
 	}
+
+	public abstract String[] getContents(int index);
 
 	private void setUpCheckBoxes(String[] ingredients, ViewGroup container, boolean[] checkBoxes) {
 		int i = 0;
