@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class ViewPagerFragment extends Fragment {
     public static final String KEY_RECIPE_INDEX = "key_recipe_index";
+    public static final String KEY_IS_INGRIDIENTS = "key_is_ingridients";
     private int mIndex;
 
     public static ViewPagerFragment newInstance(int index) {
@@ -40,8 +41,8 @@ public class ViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_viewpager, container, false);
 
-        final IngridientsFragment ingridientsFragment = IngridientsFragment.newInstance(mIndex);
-        final DirectionsFragment directionsFragment = DirectionsFragment.newInstance(mIndex);
+        final CheckBoxesFragment ingridientsFragment = CheckBoxesFragment.newInstance(mIndex,true);
+        final CheckBoxesFragment directionsFragment = CheckBoxesFragment.newInstance(mIndex, false);
 
         ViewPager viewPager = view.findViewById(R.id.viewPager);
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
