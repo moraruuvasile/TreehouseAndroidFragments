@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class ViewPagerFragment extends Fragment {
     public static final String KEY_RECIPE_INDEX = "key_recipe_index";
+    private int mIndex;
 
     public static ViewPagerFragment newInstance(int index) {
 
@@ -31,16 +32,16 @@ public class ViewPagerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int index = getArguments().getInt(KEY_RECIPE_INDEX);
-        Toast.makeText(getContext(), Recipes.names[index], Toast.LENGTH_SHORT).show();
-        getActivity().setTitle(Recipes.names[index]);
+        mIndex = getArguments().getInt(KEY_RECIPE_INDEX);
+        Toast.makeText(getContext(), Recipes.names[mIndex], Toast.LENGTH_SHORT).show();
+        getActivity().setTitle(Recipes.names[mIndex]);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_viewpager, container, false);
 
-        final IngridientsFragment ingridientsFragment = new IngridientsFragment();
-        final DirectionsFragment directionsFragment = new DirectionsFragment();
+        final IngridientsFragment ingridientsFragment = IngridientsFragment.newInstance(mIndex);
+        final DirectionsFragment directionsFragment = DirectionsFragment.newInstance(mIndex);
 
         ViewPager viewPager = view.findViewById(R.id.viewPager);
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
