@@ -4,12 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.OnRecipeSelectedInterface {
 	public static final String LIST_FRAGMENT = "list_fragment";
 	public static final String VIEWPAGE_FRAGMENT = "viewpage_fragment";
 	private static final String GRID_FRAGMENT = "grid_fragment";
+
+	ListFragments listFragments = null;
+	GridFragments gridFragments = null;
+
+	boolean vasea_test = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +25,10 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 		boolean isTablet = getResources().getBoolean(R.bool.isTablet);
 		Toast.makeText(this, isTablet + "", Toast.LENGTH_SHORT).show();
 
-		if (!isTablet && ) {
-			ListFragments savedFragment = (ListFragments) getSupportFragmentManager()
+		if (!isTablet || savedInstanceState.getBoolean("vasaaeaTEST")) {
+			listFragments = (ListFragments) getSupportFragmentManager()
 					.findFragmentByTag(LIST_FRAGMENT);
-			if (savedFragment == null) {
+			if (listFragments == null) {
 				ListFragments fragment = new ListFragments();
 				getSupportFragmentManager()
 						.beginTransaction()
@@ -30,9 +36,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 						.commit();
 			}
 		} else {
-			GridFragments savedFragment = (GridFragments) getSupportFragmentManager()
+			gridFragments = (GridFragments) getSupportFragmentManager()
 					.findFragmentByTag(GRID_FRAGMENT);
-			if (savedFragment == null) {
+			if (gridFragments == null) {
 				GridFragments fragment = new GridFragments();
 				getSupportFragmentManager()
 						.beginTransaction()
@@ -54,6 +60,15 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 
 	@Override
 	protected void onSaveInstanceState(@NonNull Bundle outState) {
+		outState.putBoolean("vasaaeaTEST", true);
 		super.onSaveInstanceState(outState);
+
+	}
+
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+//        String savedString = savedInstanceState.getString(TEXT_CONTENTS);
+//        textView.setText(savedString);
+		vasea_test = savedInstanceState.getBoolean("vasaaeaTEST");
 	}
 }
