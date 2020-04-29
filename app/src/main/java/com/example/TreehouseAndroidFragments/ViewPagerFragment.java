@@ -76,5 +76,11 @@ public class ViewPagerFragment extends Fragment {
 	public void onStop() {
 		super.onStop();
 		getActivity().setTitle(getResources().getString(R.string.app_name));
+
+	}
+
+	@Override
+	public void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
 	}
 }

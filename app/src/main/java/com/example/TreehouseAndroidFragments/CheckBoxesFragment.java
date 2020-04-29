@@ -63,14 +63,19 @@ public abstract class CheckBoxesFragment extends Fragment {
 
 	@Override
 	public void onSaveInstanceState(@NonNull Bundle outState) {
-		boolean[] stateOfCheckBoxes = new boolean[mCheckBoxes.length];
-
-		int i = 0;
-		for (CheckBox checkBox : mCheckBoxes) {
-			stateOfCheckBoxes[i] = checkBox.isChecked();
-			i++;
+		if (mCheckBoxes != null) {
+			boolean[] stateOfCheckBoxes = new boolean[mCheckBoxes.length];
+			int i = 0;
+			for (CheckBox checkBox : mCheckBoxes) {
+				stateOfCheckBoxes[i] = checkBox.isChecked();
+				i++;
+			}
+			outState.putBooleanArray(KEY_CHECKED_BOXES, stateOfCheckBoxes);
+			super.onSaveInstanceState(outState);
 		}
-		outState.putBooleanArray(KEY_CHECKED_BOXES, stateOfCheckBoxes);
-		super.onSaveInstanceState(outState);
 	}
+
+
+
+
 }
