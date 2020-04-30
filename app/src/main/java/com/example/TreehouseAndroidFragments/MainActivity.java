@@ -1,13 +1,18 @@
 package com.example.TreehouseAndroidFragments;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.example.TreehouseAndroidFragments.firstfragment.GridFragments;
+import com.example.TreehouseAndroidFragments.firstfragment.ListFragments;
+import com.example.TreehouseAndroidFragments.firstfragment.RecyclerAdapter;
+
 public class MainActivity extends AppCompatActivity implements RecyclerAdapter.OnRecipeSelectedInterface {
+	private static boolean isBack = true;
+
 	public static final String LIST_FRAGMENT = "list_fragment";
 	public static final String VIEWPAGE_FRAGMENT = "viewpage_fragment";
 	private static final String GRID_FRAGMENT = "grid_fragment";
@@ -15,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 	ListFragments listFragments = null;
 	GridFragments gridFragments = null;
 
-	boolean vasea_test = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 		boolean isTablet = getResources().getBoolean(R.bool.isTablet);
 		Toast.makeText(this, isTablet + "", Toast.LENGTH_SHORT).show();
 
-		if (!isTablet || savedInstanceState.getBoolean("vasaaeaTEST")) {
+
+		if (!isTablet && isBack) {
 			listFragments = (ListFragments) getSupportFragmentManager()
 					.findFragmentByTag(LIST_FRAGMENT);
 			if (listFragments == null) {
@@ -35,7 +40,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 						.replace(R.id.act_main_frame1, fragment, LIST_FRAGMENT)
 						.commit();
 			}
-		} else {
+		}
+
+		if(isTablet && isBack ) {
 			gridFragments = (GridFragments) getSupportFragmentManager()
 					.findFragmentByTag(GRID_FRAGMENT);
 			if (gridFragments == null) {
@@ -49,26 +56,40 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 	}
 
 	@Override
-	public void onListRecipeSelected(int index) {
-		ViewPagerFragment fragment = ViewPagerFragment.newInstance(index);
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.act_main_frame1, fragment, VIEWPAGE_FRAGMENT)
-				.addToBackStack(null)
-				.commit();
+	public void onListRecipeSelected(int index, boolean isDualPane) {
+		if (isDualPane) {
+			DualPaneFragment fragment = DualPaneFragment.newInstance(index);
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.act_main_frame1, fragment, VIEWPAGE_FRAGMENT)
+//				.addToBackStack(null)
+					.commit();
+		} else {
+			ViewPagerFragment fragment = ViewPagerFragment.newInstance(index);
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.act_main_frame1, fragment, VIEWPAGE_FRAGMENT)
+//				.addToBackStack(null)
+					.commit();
+		}
+		isBack = false;
 	}
 
 	@Override
-	protected void onSaveInstanceState(@NonNull Bundle outState) {
-		outState.putBoolean("vasaaeaTEST", true);
-		super.onSaveInstanceState(outState);
+	public void onBackPressed() {
+		if (!isBack) {
+			refreshActivity();
+		}
+		isBack = true;
+		super.onBackPressed();
+	}
+
+	private void refreshActivity() {
+		Intent i = new Intent(this, MainActivity.class);
+//		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(i);
+		finish();
 
 	}
 
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-//        String savedString = savedInstanceState.getString(TEXT_CONTENTS);
-//        textView.setText(savedString);
-		vasea_test = savedInstanceState.getBoolean("vasaaeaTEST");
-	}
 }

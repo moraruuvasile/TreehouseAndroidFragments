@@ -1,4 +1,4 @@
-package com.example.TreehouseAndroidFragments;
+package com.example.TreehouseAndroidFragments.firstfragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.TreehouseAndroidFragments.R;
+import com.example.TreehouseAndroidFragments.Recipes;
+
 
 public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ListViewHolder> {
 
 	private final OnRecipeSelectedInterface mListener;
+	private boolean mIsDual;
 
-	public RecyclerAdapter(Object mListener) {
+	public RecyclerAdapter(Object mListener, boolean isDual) {
+
 		this.mListener = (OnRecipeSelectedInterface)mListener;
+		this.mIsDual = isDual;
 	}
 
 	@NonNull
@@ -37,8 +43,8 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
 		return Recipes.names.length;
 	}
 
-	interface OnRecipeSelectedInterface {
-		void onListRecipeSelected(int index);
+	public interface OnRecipeSelectedInterface {
+		void onListRecipeSelected(int index, boolean isDualPane);
 	}
 
 	class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -61,7 +67,7 @@ public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapt
 
 		@Override
 		public void onClick(View v) {
-			mListener.onListRecipeSelected(mIndex);
+			mListener.onListRecipeSelected(mIndex, mIsDual);
 		}
 	}
 }

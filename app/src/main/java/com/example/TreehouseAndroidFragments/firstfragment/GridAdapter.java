@@ -1,10 +1,12 @@
-package com.example.TreehouseAndroidFragments;
+package com.example.TreehouseAndroidFragments.firstfragment;
 
+
+import com.example.TreehouseAndroidFragments.R;
 
 public class GridAdapter extends RecyclerAdapter {
 
 	public GridAdapter(Object mListener) {
-		super(mListener);
+		super(mListener, true);
 	}
 
 	@Override

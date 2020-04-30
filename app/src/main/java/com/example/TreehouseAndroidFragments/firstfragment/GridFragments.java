@@ -1,4 +1,4 @@
-package com.example.TreehouseAndroidFragments;
+package com.example.TreehouseAndroidFragments.firstfragment;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.TreehouseAndroidFragments.R;
 
 public class GridFragments extends Fragment {
 	@Nullable
