@@ -1,6 +1,9 @@
 package com.example.TreehouseAndroidFragments;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 				getSupportFragmentManager()
 						.beginTransaction()
 						.replace(R.id.act_main_frame1, fragment, LIST_FRAGMENT)
+//						.addToBackStack("vasea")
 						.commit();
 			}
 		}
@@ -53,6 +57,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 						.commit();
 			}
 		}
+
+		getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+			@Override
+			public void onBackStackChanged() {
+				System.out.println("vasea");
+				Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("ion");
+				if (currentFragment instanceof ListFragments) {
+
+				}
+			}
+		});
 	}
 
 	@Override
@@ -62,21 +77,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.act_main_frame1, fragment, VIEWPAGE_FRAGMENT)
-//				.addToBackStack(null)
+//				.addToBackStack(GRID_FRAGMENT)
 					.commit();
 		} else {
 			ViewPagerFragment fragment = ViewPagerFragment.newInstance(index);
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.act_main_frame1, fragment, VIEWPAGE_FRAGMENT)
-//				.addToBackStack(null)
+//			.addToBackStack(LIST_FRAGMENT)
 					.commit();
 		}
 		isBack = false;
 	}
 
 	@Override
-	public void onBackPressed() {
+	public void onBackPressed(){
 		if (!isBack) {
 			refreshActivity();
 		}
@@ -91,5 +106,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerAdapter.O
 		finish();
 
 	}
+
 
 }
